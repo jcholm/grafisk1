@@ -21,7 +21,8 @@ public class Ledtradar {
   String led4="En känd pereson från detta land är Michael Phelps";
   String led2= "Huvudstaden i detta land är Was´hington DC";
   int ledCount=0;
-  
+  int index;
+  int ledLap = 0;
   
     Ledtradar(){
     ledLista.add(led10);
@@ -29,15 +30,24 @@ public class Ledtradar {
     ledLista.add(led6);
     ledLista.add(led4);
     ledLista.add(led2);
+    int[] ledPoint = {10,8,6,4,2};
+    
 }
  
  public String nastaLed(){
-     int index = ledCount;
-     ledCount++;
-     return ledLista.get(index);
+
+     if(ledCount<=4){
+        index = ledCount;
+        ledCount++;
+        return ledLista.get(index);}
+     else{
+         ledCount = 0;
+         ledLap = 1;
+         return ledLista.get(ledCount);
+         
+     }
     
  }
-
 
 
 
