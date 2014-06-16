@@ -8,6 +8,8 @@ package grafisk1;
 import static com.sun.javafx.fxml.expression.Expression.add;
 import java.awt.*;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 /**
@@ -22,13 +24,16 @@ public class Grafisk1 extends JFrame {
     JPanel bild;
     JPanel center;
     Bild bilden=null;
+    Ledtradar led;
     Grafisk1(){
         super("test");
         JPanel north=new JPanel();
 	add(north,BorderLayout.NORTH);
-        
-        ledtrad=new JLabel("ledtråd");
+        led=new Ledtradar();
+        ledtrad=new JLabel(led.nastaLed());
         nyled=new JButton("Ny ledtråd");
+        nyled.addActionListener(new nyledLyss());
+
         north.add(ledtrad);
         north.add(nyled);
         
@@ -54,7 +59,20 @@ public class Grafisk1 extends JFrame {
         pack();
         
         
+        
     }
+    
+    
+    class nyledLyss implements ActionListener{
+	public void actionPerformed (ActionEvent ave){
+		ledtrad.setText(led.nastaLed());	
+		
+                
+                
+                }
+	}
+    
+    
     
     public static void main(String[] args) {
         new Grafisk1();
