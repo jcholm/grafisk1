@@ -65,7 +65,8 @@ public class Grafisk1 extends JFrame {
     
     class nyledLyss implements ActionListener{
 	public void actionPerformed (ActionEvent ave){
-		ledtrad.setText(led.nastaLed());	
+		ledtrad.setText(led.nastaLed());
+                ledtrad.setText(led.nastapoang());
 		
                 
                 
