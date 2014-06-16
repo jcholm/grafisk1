@@ -21,7 +21,7 @@ public class Grafisk1 extends JFrame {
     JTextField svar;
     JPanel bild;
     JPanel center;
-    
+    Bild bilden=null;
     Grafisk1(){
         super("test");
         JPanel north=new JPanel();
@@ -32,11 +32,10 @@ public class Grafisk1 extends JFrame {
         north.add(ledtrad);
         north.add(nyled);
         
-        center= new JPanel();
-        ImageIcon image = new ImageIcon("image.jpeg");
-        center.add(image, BorderLayout.CENTER);
-        
        
+        
+        bilden = new Bild();//är en JPanel
+        add(bilden, BorderLayout.CENTER);
         
         
         
@@ -51,7 +50,9 @@ public class Grafisk1 extends JFrame {
         setVisible(true);
         setLocation(300,300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //setSize(700, 400);
         pack();
+        
         
     }
     
