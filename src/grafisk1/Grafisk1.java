@@ -66,7 +66,7 @@ public class Grafisk1 extends JFrame {
     class nyledLyss implements ActionListener{
 	public void actionPerformed (ActionEvent ave){
 		ledtrad.setText(led.nastaLed());
-                ledtrad.setText(led.nastapoang());
+                ledtrad.setText(led.nastapoang());  // Kan användas på annan Label sen
 		
                 
                 

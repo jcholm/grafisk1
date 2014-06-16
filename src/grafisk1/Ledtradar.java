@@ -35,17 +35,10 @@ public class Ledtradar {
 }
  
  public String nastaLed(){
-
-     if(ledCount<=4){
-        this.index = ledCount;
-        ledCount++;
-        return ledLista.get(index);}
-     else{
-         ledCount = 0;
-         ledLap = 1;
-         return ledLista.get(ledCount);
-         
-     }
+     if(ledCount>4) ledCount = 0;
+     this.index = ledCount;
+     ledCount++;
+     return ledLista.get(index);
     
  }
  public String nastapoang(){
