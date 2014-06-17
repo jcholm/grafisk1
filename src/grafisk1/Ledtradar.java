@@ -19,10 +19,12 @@ public class Ledtradar {
   String led8="Detta land är det fjärde största till ytan";
   String led6="Detta land är det tredje största till total befolkning";
   String led4="En känd pereson från detta land är Michael Phelps";
-  String led2= "Huvudstaden i detta land är Was´hington DC";
+  String led2= "Huvudstaden i detta land är Washington DC";
+  String answer = "USA";
   int ledCount=0;
   int index;
   int ledLap = 0;
+  int points = 10;
   String[] ledPoint = {"10","8","6","4","2"};
     Ledtradar(){
     ledLista.add(led10);
@@ -35,17 +37,24 @@ public class Ledtradar {
 }
  
  public String nastaLed(){
-     if(ledCount>4) ledCount = 0;
+     if(ledCount>4) {ledCount = 0; this.ledLap = 1;}
      this.index = ledCount;
      ledCount++;
      return ledLista.get(index);
     
  }
  public String nastapoang(){
-     return ledPoint[index];
+     if(ledLap == 0){
+         this.points = 10-(2*index);
+         return ledPoint[index] + " poäng: ";
+     } else {
+         this.points = 2;
+         return "2 poäng: ";
+     }
  }
- 
-
-
+ public Integer svarP(){
+     return this.points;
+            
+ }
 
 }

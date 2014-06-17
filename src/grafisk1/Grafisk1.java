@@ -17,12 +17,10 @@ import javax.swing.*;
  * @author johancholmberg
  */
 public class Grafisk1 extends JFrame {
-    JButton klar;
-    JButton nyled;
-    JLabel ledtrad;
+    JButton klar, nyled;
+    JLabel ledtrad, poang;
     JTextField svar;
-    JPanel bild;
-    JPanel center;
+    JPanel bild, center;
     Bild bilden=null;
     Ledtradar led;
     Grafisk1(){
@@ -33,7 +31,9 @@ public class Grafisk1 extends JFrame {
         ledtrad=new JLabel(led.nastaLed());
         nyled=new JButton("Ny ledtråd");
         nyled.addActionListener(new nyledLyss());
+        poang = new JLabel(led.nastapoang());
 
+        north.add(poang, BorderLayout.WEST);
         north.add(ledtrad);
         north.add(nyled);
         
@@ -48,7 +48,7 @@ public class Grafisk1 extends JFrame {
         svar=new JTextField("Svar",10);
         klar=new JButton("Klar");
 	add(south,BorderLayout.SOUTH);
-        
+        klar.addActionListener(new klarLyss());
         south.add(svar);
         south.add(klar);
         
@@ -66,8 +66,22 @@ public class Grafisk1 extends JFrame {
     class nyledLyss implements ActionListener{
 	public void actionPerformed (ActionEvent ave){
 		ledtrad.setText(led.nastaLed());
-                ledtrad.setText(led.nastapoang());  // Kan användas på annan Label sen
-		
+                poang.setText(led.nastapoang());
+		//System.out.println(led.svarP());
+                
+                
+                }
+	}
+    class klarLyss implements ActionListener{
+	public void actionPerformed (ActionEvent ave){
+		//ledtrad.setText(led.nastaLed());
+                //poang.setText(led.nastapoang());
+		String answ = svar.getText().toLowerCase();
+                if (answ.equals(led.answer.toLowerCase())){
+                System.out.println(led.svarP());
+                } else {
+                    System.out.println("Wrong answer");
+                }
                 
                 
                 }
