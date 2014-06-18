@@ -6,12 +6,13 @@
 
 package grafisk1;
 
-import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,10 +28,11 @@ public class Ledtradar {
   int index;
   int ledLap = 0;
   int points = 10;
-  int id = 1;
+  int id = random();
   String[] ledPoint = {"10","8","6","4","2"};
   String[] svarsalt;
     Ledtradar(){
+        System.out.println(random());
     try{
         String host = "jdbc:mysql://atlas.dsv.su.se:3306/db_14534252";
         String driver = "com.mysql.jbdc.Driver";
@@ -77,11 +79,11 @@ public class Ledtradar {
          return "2 poäng: ";
      }
  }
- public Integer svarP(){
+ public Integer svarP(){ //returnerar poäng.
      return this.points;
             
  }
- public boolean ansComp(String poss_ans){
+ public boolean ansComp(String poss_ans){// Jämför svar.
      boolean res_Comp = false;
      for(String q_ans:svarsalt) {
          if(q_ans.toLowerCase().equals(poss_ans.toLowerCase())) {
@@ -91,6 +93,13 @@ public class Ledtradar {
          
      }
      return res_Comp;
+ }
+ 
+ public int random(){
+ Random randomGen = new Random();
+ int randomInt = randomGen.nextInt(2);
+ randomInt+=1;
+ return randomInt;
  }
 
 }
