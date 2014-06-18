@@ -42,7 +42,7 @@ public class User {
         }
     }
     
-    public LinkedList getFraga (){
+    public LinkedList getFragLista (){
         return fragLista;
     }
     

@@ -11,6 +11,8 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -28,9 +30,16 @@ public class Grafisk1 extends JFrame {
     User U1;
     Grafisk1() throws SQLException{
         super("test");
+        
+        NamnForm form= new NamnForm();
+        int svaret = JOptionPane.showConfirmDialog(Grafisk1.this, form,
+	"Skriv in ditt namn", JOptionPane.DEFAULT_OPTION);
+        U1 = new User(form.getNamn());
+        
         JPanel north=new JPanel();
 	add(north,BorderLayout.NORTH);
         led=new Ledtradar();
+        led.getFraga(U1.getFragLista());
         ledtrad=new JLabel(led.nastaLed());
         nyled=new JButton("Ny ledtråd");
         nyled.addActionListener(new nyledLyss());
@@ -45,10 +54,7 @@ public class Grafisk1 extends JFrame {
         bilden = new Bild();//är en JPanel
         add(bilden, BorderLayout.CENTER);
         
-        NamnForm form= new NamnForm();
-        int svaret = JOptionPane.showConfirmDialog(Grafisk1.this, form,
-	"Skriv in ditt namn", JOptionPane.OK_CANCEL_OPTION);
-        U1 = new User(form.getNamn());
+        
         
         JPanel south=new JPanel();
         svar=new JTextField("Svar",10);
@@ -89,8 +95,22 @@ public class Grafisk1 extends JFrame {
                 //poang.setText(led.nastapoang());
 		String answ = svar.getText().toLowerCase();
                 if(led.ansComp(answ)){
+                    U1.setPoang(led.svarP());
+                    JOptionPane.showMessageDialog(Grafisk1.this,
+                    "Rätt svar!");
+                    try {
+                        led.getFraga(U1.getFragLista());
+                        ledtrad.setText(led.nastaLed());
+                        poang.setText(led.nastapoang());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     System.out.println("Rätt svar " + led.svarP() + " Poäng");
-                } else {System.out.println("Fel svar"); }
+                } else {
+                    System.out.println("Fel svar"); 
+                    JOptionPane.showMessageDialog(Grafisk1.this,
+                    "Fel svar.");
+                }
                 /*
                 if (answ.equals(led.q_ans.toLowerCase())){
                 System.out.println(led.svarP() + " poäng!");
