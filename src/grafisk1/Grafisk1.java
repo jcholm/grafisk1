@@ -30,11 +30,12 @@ public class Grafisk1 extends JFrame {
     User U1;
     Grafisk1() throws SQLException{
         super("test");
-        
-        NamnForm form= new NamnForm();
+        NamnForm form;
+        do {
+        form= new NamnForm();
         int svaret = JOptionPane.showConfirmDialog(Grafisk1.this, form,
 	"Skriv in ditt namn", JOptionPane.DEFAULT_OPTION);
-        U1 = new User(form.getNamn());
+        U1 = new User(form.getNamn());} while(form.getNamn().isEmpty());
         
         JPanel north=new JPanel();
 	add(north,BorderLayout.NORTH);
@@ -148,7 +149,6 @@ public class Grafisk1 extends JFrame {
 		}
 		
 		
-
 }
     
     public static void main(String[] args) throws SQLException {
