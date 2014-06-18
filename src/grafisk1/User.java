@@ -23,22 +23,26 @@ public class User {
         this.namn=namn;
     }
     
-    public void SetPoang (int p){
+    public String getNamn ( ){
+        return namn;
+    }
+    
+    public void setPoang (int p){
         poang+=p;
     }
     
-    public int GetPoang (){
+    public int getPoang (){
         return poang;
     } 
     
-    public void SetFraga (int id){
+    public void setFraga (int id){
         fragLista.addFirst(id);
         if(fragLista.size()>29){
             fragLista.removeLast();
         }
     }
     
-    public LinkedList GetFraga (){
+    public LinkedList getFraga (){
         return fragLista;
     }
     
