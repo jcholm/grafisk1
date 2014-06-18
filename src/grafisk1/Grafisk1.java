@@ -10,8 +10,8 @@ import java.awt.*;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.*;
+
 /**
  *
  * @author johancholmberg
@@ -77,12 +77,16 @@ public class Grafisk1 extends JFrame {
 		//ledtrad.setText(led.nastaLed());
                 //poang.setText(led.nastapoang());
 		String answ = svar.getText().toLowerCase();
-                if (answ.equals(led.answer.toLowerCase())){
-                System.out.println(led.svarP());
+                if(led.ansComp(answ)){
+                    System.out.println("Rätt svar " + led.svarP() + " Poäng");
+                } else {System.out.println("Fel svar"); }
+                /*
+                if (answ.equals(led.q_ans.toLowerCase())){
+                System.out.println(led.svarP() + " poäng!");
                 } else {
-                    System.out.println("Wrong answer");
+                    System.out.println("Wrong answer, correct answer is: " + led.q_ans);
                 }
-                
+                */
                 
                 }
 	}
