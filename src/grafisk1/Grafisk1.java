@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.*;
 
 /**
@@ -23,7 +24,9 @@ public class Grafisk1 extends JFrame {
     JPanel bild, center;
     Bild bilden=null;
     Ledtradar led;
-    Grafisk1(){
+    String aNamn;
+    int poäng=0;
+    Grafisk1() throws SQLException{
         super("test");
         JPanel north=new JPanel();
 	add(north,BorderLayout.NORTH);
@@ -51,6 +54,11 @@ public class Grafisk1 extends JFrame {
         klar.addActionListener(new klarLyss());
         south.add(svar);
         south.add(klar);
+       
+        NamnForm form= new NamnForm();
+        int svar = JOptionPane.showConfirmDialog(Grafisk1.this, form,
+	"Skriv in ditt namn", JOptionPane.OK_CANCEL_OPTION);
+        aNamn=form.getNamn();
         
         setVisible(true);
         setLocation(300,300);
@@ -90,10 +98,32 @@ public class Grafisk1 extends JFrame {
                 
                 }
 	}
+    class NamnForm extends JPanel{
+    private JTextField NamnFält= new JTextField(13);
+    public NamnForm(){
+			setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+			
+
+			JPanel rad1= new JPanel();
+			JLabel NamnF= new JLabel("Namn");
+			rad1.add(NamnF);
+			rad1.add(NamnFält);
+			add(rad1);
+
+	
+
+		}
+
+		public String getNamn() {
+			return NamnFält.getText();
+		}
+		
+		
+
+}
     
-    
-    
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         new Grafisk1();
         
     }
