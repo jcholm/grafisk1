@@ -36,9 +36,10 @@ public class User {
     } 
     
     public void setFraga (int id){
-        fragLista.addFirst(id);
+        this.fragLista.addFirst(id);
         if(fragLista.size()>29){
-            fragLista.removeLast();
+            System.out.println("Större än 29");
+            this.fragLista.removeLast();
         }
     }
     

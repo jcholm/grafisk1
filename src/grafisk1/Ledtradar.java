@@ -26,7 +26,7 @@ public class Ledtradar {
   
   String q_answer = "default";
   int ledCount=0;
-  int index,size;
+  int index,size,id;
   int ledLap = 0;
   int points = 10;
   ResultSet rs,res;
@@ -49,7 +49,7 @@ public class Ledtradar {
         ledCount=0;
         index = 0;
         ledLista.clear();
-        int id = random(size,li);
+        this.id = random(size,li);
         String sql = "SELECT * FROM fragor WHERE id=" + id;
         rs = stmt.executeQuery(sql);
         rs.next();
@@ -101,10 +101,11 @@ public class Ledtradar {
  }
  
  public int random(int size, LinkedList li){
-    Random randomGen = new Random();
-    int randomInt = randomGen.nextInt(size);
-    randomInt+=1;
-    if(li.contains(randomInt)) {random(size,li);}
+    int randomInt;
+     do {
+     Random randomGen = new Random();
+    randomInt = randomGen.nextInt(size);
+    randomInt+=1;} while(li.contains(randomInt));
     return randomInt;
  }
  

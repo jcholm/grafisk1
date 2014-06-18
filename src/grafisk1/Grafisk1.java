@@ -102,10 +102,11 @@ public class Grafisk1 extends JFrame {
                     JOptionPane.showMessageDialog(Grafisk1.this,
                     "Rätt svar!");
                     try {
+                        U1.setFraga(led.id);
                         led.getFraga(U1.getFragLista());
                         ledtrad.setText(led.nastaLed());
                         poang.setText(led.nastapoang());
-                        totalPoang.setText(" Du har "+Integer.toString( +U1.getPoang()) +"poäng!");
+                        totalPoang.setText(" Du har "+Integer.toString( +U1.getPoang()) +" poäng!");
                     } catch (SQLException ex) {
                         Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
                     }
