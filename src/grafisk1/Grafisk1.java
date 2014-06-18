@@ -19,7 +19,7 @@ import javax.swing.*;
  */
 public class Grafisk1 extends JFrame {
     JButton klar, nyled;
-    JLabel ledtrad, poang;
+    JLabel ledtrad, poang, aNamnLabel;
     JTextField svar;
     JPanel bild, center;
     Bild bilden=null;
@@ -45,25 +45,27 @@ public class Grafisk1 extends JFrame {
         bilden = new Bild();//är en JPanel
         add(bilden, BorderLayout.CENTER);
         
-        
+        NamnForm form= new NamnForm();
+        int svaret = JOptionPane.showConfirmDialog(Grafisk1.this, form,
+	"Skriv in ditt namn", JOptionPane.OK_CANCEL_OPTION);
+        aNamn=form.getNamn();
         
         JPanel south=new JPanel();
         svar=new JTextField("Svar",10);
         klar=new JButton("Klar");
+        aNamnLabel = new JLabel(aNamn);
 	add(south,BorderLayout.SOUTH);
         klar.addActionListener(new klarLyss());
+        south.add(aNamnLabel);
         south.add(svar);
         south.add(klar);
        
-        NamnForm form= new NamnForm();
-        int svar = JOptionPane.showConfirmDialog(Grafisk1.this, form,
-	"Skriv in ditt namn", JOptionPane.OK_CANCEL_OPTION);
-        aNamn=form.getNamn();
+
         
         setVisible(true);
-        setLocation(300,300);
+        //setLocation(300,300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //setSize(700, 400);
+        //setSize(600, 300);
         pack();
         
         
