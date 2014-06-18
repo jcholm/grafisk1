@@ -47,6 +47,7 @@ public class Ledtradar {
  
     public void getFraga(LinkedList li) throws SQLException{
         ledCount=0;
+        index = 0;
         ledLista.clear();
         int id = random(size,li);
         String sql = "SELECT * FROM fragor WHERE id=" + id;
