@@ -21,12 +21,12 @@ import javax.swing.*;
  */
 public class Grafisk1 extends JFrame {
     JButton klar, nyled;
-    JLabel ledtrad, poang, aNamnLabel;
+    JLabel ledtrad, poang, aNamnLabel, totalPoang;
     JTextField svar;
     JPanel bild, center;
     Bild bilden=null;
     Ledtradar led;
-    int poäng=0;
+    
     User U1;
     Grafisk1() throws SQLException{
         super("test");
@@ -60,9 +60,12 @@ public class Grafisk1 extends JFrame {
         svar=new JTextField("Svar",10);
         klar=new JButton("Klar");
         aNamnLabel = new JLabel(U1.getNamn());
+        String tP = Integer.toString(U1.getPoang());
+        totalPoang = new JLabel("  Du har " +tP +" poäng ");
         add(south,BorderLayout.SOUTH);
         klar.addActionListener(new klarLyss());
         south.add(aNamnLabel);
+        south.add(totalPoang);
         south.add(svar);
         south.add(klar);
         //south.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -102,6 +105,7 @@ public class Grafisk1 extends JFrame {
                         led.getFraga(U1.getFragLista());
                         ledtrad.setText(led.nastaLed());
                         poang.setText(led.nastapoang());
+                        totalPoang.setText(" Du har "+Integer.toString( +U1.getPoang()) +"poäng!");
                     } catch (SQLException ex) {
                         Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
                     }
