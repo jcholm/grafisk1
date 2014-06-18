@@ -12,6 +12,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,21 +32,22 @@ public class Ledtradar {
   String[] svarsalt;
     Ledtradar(){
     try{
-        String host = "jdbc:derby://localhost:1527/grafisk";
-        String uname = "inan";
-        String pwd = "admin";
+        String host = "jdbc:mysql://atlas.dsv.su.se:3306/db_14534252";
+        String driver = "com.mysql.jbdc.Driver";
+        String uname = "usr_14534252";
+        String pwd = "534252";
         Connection con = DriverManager.getConnection(host, uname, pwd);
         Statement stmt = con.createStatement();
-        String sql = "SELECT * FROM QUESTION WHERE ID=" + id;
+        String sql = "SELECT * FROM fragor WHERE id=" + id;
         ResultSet rs = stmt.executeQuery(sql);
         rs.next();
-        int id_col = rs.getInt("ID");
-        String q_Led10 = rs.getString("LED1");
-        String q_Led8 = rs.getString("LED2");
-        String q_Led6 = rs.getString("LED3");
-        String q_Led4 = rs.getString("LED4");
-        String q_Led2 = rs.getString("LED5");
-        q_answer = rs.getString("SVAR");
+        int id_col = rs.getInt("id");
+        String q_Led10 = rs.getString("led10");
+        String q_Led8 = rs.getString("led8");
+        String q_Led6 = rs.getString("led6");
+        String q_Led4 = rs.getString("led4");
+        String q_Led2 = rs.getString("led2");
+        q_answer = rs.getString("svar");
         svarsalt = q_answer.split("\\s*,\\s*");
         ledLista.add(q_Led10);
         ledLista.add(q_Led8);
@@ -54,8 +57,7 @@ public class Ledtradar {
         }
         catch (SQLException err) {
             System.out.println(err.getMessage());
-        }
-    
+        } 
     }
          
     
