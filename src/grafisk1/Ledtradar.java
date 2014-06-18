@@ -28,11 +28,10 @@ public class Ledtradar {
   int index;
   int ledLap = 0;
   int points = 10;
-  int id = random();
   String[] ledPoint = {"10","8","6","4","2"};
   String[] svarsalt;
     Ledtradar(){
-        System.out.println(random());
+        //System.out.println(random());
     try{
         String host = "jdbc:mysql://atlas.dsv.su.se:3306/db_14534252";
         String driver = "com.mysql.jbdc.Driver";
@@ -40,6 +39,10 @@ public class Ledtradar {
         String pwd = "534252";
         Connection con = DriverManager.getConnection(host, uname, pwd);
         Statement stmt = con.createStatement();
+        ResultSet res = stmt.executeQuery("SELECT COUNT(*) FROM fragor");
+        res.next();
+        int size = res.getInt(1); 
+        int id = random(size);
         String sql = "SELECT * FROM fragor WHERE id=" + id;
         ResultSet rs = stmt.executeQuery(sql);
         rs.next();
@@ -95,9 +98,9 @@ public class Ledtradar {
      return res_Comp;
  }
  
- public int random(){
+ public int random(int size){
  Random randomGen = new Random();
- int randomInt = randomGen.nextInt(2);
+ int randomInt = randomGen.nextInt(size);
  randomInt+=1;
  return randomInt;
  }
