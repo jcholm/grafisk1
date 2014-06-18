@@ -54,11 +54,12 @@ public class Grafisk1 extends JFrame {
         svar=new JTextField("Svar",10);
         klar=new JButton("Klar");
         aNamnLabel = new JLabel(aNamn);
-	add(south,BorderLayout.SOUTH);
+        add(south,BorderLayout.SOUTH);
         klar.addActionListener(new klarLyss());
         south.add(aNamnLabel);
         south.add(svar);
         south.add(klar);
+        //south.setLayout(new FlowLayout(FlowLayout.LEFT));
        
 
         
