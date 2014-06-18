@@ -30,15 +30,11 @@ public class Ledtradar {
   int points = 10;
   String[] ledPoint = {"10","8","6","4","2"};
   String[] svarsalt;
-    Ledtradar(){
+    Ledtradar() throws SQLException{
         //System.out.println(random());
-    try{
-        String host = "jdbc:mysql://atlas.dsv.su.se:3306/db_14534252";
-        String driver = "com.mysql.jbdc.Driver";
-        String uname = "usr_14534252";
-        String pwd = "534252";
-        Connection con = DriverManager.getConnection(host, uname, pwd);
-        Statement stmt = con.createStatement();
+        DbAnslutning anslut= new DbAnslutning();
+        
+        Statement stmt = anslut.con.createStatement();
         ResultSet res = stmt.executeQuery("SELECT COUNT(*) FROM fragor");
         res.next();
         int size = res.getInt(1); 
@@ -59,10 +55,7 @@ public class Ledtradar {
         ledLista.add(q_Led6);
         ledLista.add(q_Led4);
         ledLista.add(q_Led2);
-        }
-        catch (SQLException err) {
-            System.out.println(err.getMessage());
-        } 
+        
     }
          
     
