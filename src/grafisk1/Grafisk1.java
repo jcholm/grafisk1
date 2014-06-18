@@ -24,8 +24,8 @@ public class Grafisk1 extends JFrame {
     JPanel bild, center;
     Bild bilden=null;
     Ledtradar led;
-    String aNamn;
     int poäng=0;
+    User U1;
     Grafisk1() throws SQLException{
         super("test");
         JPanel north=new JPanel();
@@ -48,12 +48,12 @@ public class Grafisk1 extends JFrame {
         NamnForm form= new NamnForm();
         int svaret = JOptionPane.showConfirmDialog(Grafisk1.this, form,
 	"Skriv in ditt namn", JOptionPane.OK_CANCEL_OPTION);
-        aNamn=form.getNamn();
+        U1 = new User(form.getNamn());
         
         JPanel south=new JPanel();
         svar=new JTextField("Svar",10);
         klar=new JButton("Klar");
-        aNamnLabel = new JLabel(aNamn);
+        aNamnLabel = new JLabel(U1.getNamn());
         add(south,BorderLayout.SOUTH);
         klar.addActionListener(new klarLyss());
         south.add(aNamnLabel);
