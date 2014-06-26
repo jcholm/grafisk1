@@ -46,7 +46,7 @@ public class Grafisk1 extends JFrame {
         nyled.addActionListener(new nyledLyss());
         poang = new JLabel(led.nastapoang());
 
-        north.add(poang, BorderLayout.WEST);
+        north.add(poang, BorderLayout.LINE_START);
         north.add(ledtrad);
         north.add(nyled);
         
@@ -57,7 +57,7 @@ public class Grafisk1 extends JFrame {
         
         
         
-        JPanel south=new JPanel();
+        JPanel south=new JPanel(new BorderLayout());
         svar=new JTextField("Svar",10);
         klar=new JButton("Klar");
         aNamnLabel = new JLabel(U1.getNamn());
@@ -65,10 +65,12 @@ public class Grafisk1 extends JFrame {
         totalPoang = new JLabel("  Du har " +tP +" poäng ");
         add(south,BorderLayout.SOUTH);
         klar.addActionListener(new klarLyss());
-        south.add(aNamnLabel);
-        south.add(totalPoang);
-        south.add(svar);
-        south.add(klar);
+        south.add(aNamnLabel,BorderLayout.WEST);
+        JPanel southe = new JPanel(new BorderLayout());
+        south.add(southe,BorderLayout.EAST);
+        south.add(totalPoang,BorderLayout.CENTER);
+        southe.add(svar,BorderLayout.WEST);
+        southe.add(klar,BorderLayout.EAST);
         //south.setLayout(new FlowLayout(FlowLayout.LEFT));
        
 
@@ -107,6 +109,7 @@ public class Grafisk1 extends JFrame {
                         led.getFraga(U1.getFragLista());
                         ledtrad.setText(led.nastaLed());
                         poang.setText(led.nastapoang());
+                        svar.setText("");
                         totalPoang.setText(" Du har "+Integer.toString( +U1.getPoang()) +" poäng!");
                     } catch (SQLException ex) {
                         Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
