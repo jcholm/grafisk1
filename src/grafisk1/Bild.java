@@ -20,29 +20,33 @@ import javax.swing.JPanel;
  * @author johancholmberg
  */
 public class Bild extends JPanel {
-    private ImageIcon bild;
+    ImageIcon bild;
     BufferedImage bilder;
     
     Bild() throws IOException{
         System.out.println("Not connected yet");
         JSch jsch = new JSch();
-        Session session = null;
-        InputStream out = null;
+        Session session;
+        InputStream out;
         
         try {
-            session = jsch.getSession("joho3075", "sftp.dsv.se.se", 22);
+            session = jsch.getSession("joho3075", "sftp.dsv.su.se", 22);
             session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword("eqxkudfe2U");
             session.connect();
             System.out.println("Connection successfull");
 
             Channel channel = session.openChannel("sftp");
+            System.out.println("session.openChannel done");
             channel.connect();
+            System.out.println("Channel connected");
             ChannelSftp sftpChannel = (ChannelSftp) channel;
+            System.out.println("Channel done");
             out = sftpChannel.get("public_html/Bilder/world.png");
-            sftpChannel.exit();
-            session.disconnect();
+            System.out.println("Directory found");
             bilder = ImageIO.read(out);
+            //sftpChannel.exit();
+            //session.disconnect();
         } catch (JSchException | SftpException e) {
         }
         setLayout(null);
@@ -51,7 +55,6 @@ public class Bild extends JPanel {
     }
     //bild.getIconWidth(), bild.getIconHeight()
     
-    @Override
     protected void paintComponent(Graphics g){
 	        super.paintComponent(g);
 	            g.drawImage(bild.getImage(), 0, 0, this);
