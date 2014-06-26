@@ -6,45 +6,52 @@
 
 package grafisk1;
 
+import com.jcraft.jsch.*;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import com.jcraft.jsch.*;
 /**
  *
  * @author johancholmberg
  */
 public class Bild extends JPanel {
     private ImageIcon bild;
+    BufferedImage bilder;
     
-    
-    Bild(){
+    Bild() throws IOException{
+        System.out.println("Not connected yet");
         JSch jsch = new JSch();
         Session session = null;
+        InputStream out = null;
+        
         try {
-            session = jsch.getSession("joho3075", "127.0.0.1", 22);
+            session = jsch.getSession("joho3075", "sftp.dsv.se.se", 22);
             session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword("eqxkudfe2U");
             session.connect();
+            System.out.println("Connection successfull");
 
             Channel channel = session.openChannel("sftp");
             channel.connect();
             ChannelSftp sftpChannel = (ChannelSftp) channel;
-            bild= new ImageIcon(sftpChannel.get("public_html/Bilder/world.png"));
+            out = sftpChannel.get("public_html/Bilder/world.png");
             sftpChannel.exit();
             session.disconnect();
-        } catch (JSchException e) {
-            e.printStackTrace();  
-        } catch (SftpException e) {
-            e.printStackTrace();
+            bilder = ImageIO.read(out);
+        } catch (JSchException | SftpException e) {
         }
         setLayout(null);
-	//bild = new ImageIcon("world.png");
+	bild = new ImageIcon(bilder);
 	setPreferredSize(new Dimension(300,300));
     }
     //bild.getIconWidth(), bild.getIconHeight()
     
+    @Override
     protected void paintComponent(Graphics g){
 	        super.paintComponent(g);
 	            g.drawImage(bild.getImage(), 0, 0, this);

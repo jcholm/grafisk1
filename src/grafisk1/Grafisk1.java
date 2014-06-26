@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +29,7 @@ public class Grafisk1 extends JFrame {
     Ledtradar led;
     
     User U1;
-    Grafisk1() throws SQLException{
+    Grafisk1() throws SQLException, IOException{
         super("test");
         NamnForm form;
         do {
@@ -71,7 +72,7 @@ public class Grafisk1 extends JFrame {
         south.add(totalPoang,BorderLayout.CENTER);
         southe.add(svar,BorderLayout.WEST);
         southe.add(klar,BorderLayout.EAST);
-        //south.setLayout(new FlowLayout(FlowLayout.LEFT));
+        southe.getRootPane().setDefaultButton(klar);
        
 
         
@@ -154,7 +155,7 @@ public class Grafisk1 extends JFrame {
 		
 }
     
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException {
         new Grafisk1();
         
     }
