@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -21,13 +22,14 @@ import javax.swing.JPanel;
  */
 public class Bild extends JPanel {
     ImageIcon bild;
-    BufferedImage bilder;
-    
+    BufferedImage bildbuffer;
+    private ChannelSftp sftpChannel;
+    InputStream out;
+    Session session;
     Bild() throws IOException{
         System.out.println("Not connected yet");
         JSch jsch = new JSch();
-        Session session;
-        InputStream out;
+        ChannelSftp sftpChannel = null;
         
         try {
             session = jsch.getSession("joho3075", "sftp.dsv.su.se", 22);
@@ -40,18 +42,13 @@ public class Bild extends JPanel {
             System.out.println("session.openChannel done");
             channel.connect();
             System.out.println("Channel connected");
-            ChannelSftp sftpChannel = (ChannelSftp) channel;
+            this.sftpChannel = (ChannelSftp) channel;
             System.out.println("Channel done");
-            out = sftpChannel.get("public_html/Bilder/world.png");
-            System.out.println("Directory found");
-            bilder = ImageIO.read(out);
-            //sftpChannel.exit();
-            //session.disconnect();
-        } catch (JSchException | SftpException e) {
+            
+
+        } catch (JSchException e) {
         }
-        setLayout(null);
-	bild = new ImageIcon(bilder);
-	setPreferredSize(new Dimension(300,300));
+
     }
     //bild.getIconWidth(), bild.getIconHeight()
     
@@ -62,5 +59,22 @@ public class Bild extends JPanel {
 	           
 	       
 	    }
+    
+    public void bytbild(String namn) throws SftpException{
+        out = sftpChannel.get("public_html/Bilder/" + namn);
+        System.out.println("Directory found");
+        try {
+            bildbuffer = ImageIO.read(out);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(Bild.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        setLayout(null);
+	this.bild = new ImageIcon(bildbuffer);
+	setPreferredSize(new Dimension(300,300));
+    }
+    public void closeCon(){
+            this.sftpChannel.exit();
+            this.session.disconnect();
+    }
 
 }

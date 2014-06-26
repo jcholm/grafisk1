@@ -5,6 +5,7 @@
  */
 
 package grafisk1;
+import com.jcraft.jsch.SftpException;
 import static com.sun.javafx.fxml.expression.Expression.add;
 import java.awt.*;
 import java.awt.LayoutManager;
@@ -29,7 +30,7 @@ public class Grafisk1 extends JFrame {
     Ledtradar led;
     
     User U1;
-    Grafisk1() throws SQLException, IOException{
+    Grafisk1() throws SQLException, IOException, SftpException{
         super("test");
         NamnForm form;
         do {
@@ -54,6 +55,7 @@ public class Grafisk1 extends JFrame {
        
         
         bilden = new Bild();//är en JPanel
+        bilden.bytbild(led.bildNamn());
         add(bilden, BorderLayout.CENTER);
         
         
@@ -155,7 +157,7 @@ public class Grafisk1 extends JFrame {
 		
 }
     
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) throws SQLException, IOException, SftpException {
         new Grafisk1();
         
     }

@@ -25,6 +25,7 @@ public class Ledtradar {
   ArrayList <String> ledLista = new ArrayList <String> ();
   
   String q_answer = "default";
+  String qImgName;
   int ledCount=0;
   int index,size,id;
   int ledLap = 0;
@@ -61,6 +62,7 @@ public class Ledtradar {
         String q_Led4 = rs.getString("led4");
         String q_Led2 = rs.getString("led2");
         q_answer = rs.getString("svar");
+        qImgName = rs.getString("bildnamn");
         svarsalt = q_answer.split("\\s*,\\s*");
         this.ledLista.add(q_Led10);
         this.ledLista.add(q_Led8);
@@ -75,6 +77,9 @@ public class Ledtradar {
      ledCount++;
      return ledLista.get(index);
     
+ }
+ public String bildNamn(){
+     return qImgName;
  }
  public String nastapoang(){
      if(ledLap == 0){
