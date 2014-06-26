@@ -35,6 +35,7 @@ public class Bild extends JPanel {
             session = jsch.getSession("joho3075", "sftp.dsv.su.se", 22);
             session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword("eqxkudfe2U");
+           System.out.println("Not connected yet");
             session.connect();
             System.out.println("Connection successfull");
 
