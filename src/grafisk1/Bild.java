@@ -10,7 +10,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
+import com.jcraft.jsch.*;
 /**
  *
  * @author johancholmberg
@@ -20,8 +20,27 @@ public class Bild extends JPanel {
     
     
     Bild(){
+        JSch jsch = new JSch();
+        Session session = null;
+        try {
+            session = jsch.getSession("joho3075", "127.0.0.1", 22);
+            session.setConfig("StrictHostKeyChecking", "no");
+            session.setPassword("eqxkudfe2U");
+            session.connect();
+
+            Channel channel = session.openChannel("sftp");
+            channel.connect();
+            ChannelSftp sftpChannel = (ChannelSftp) channel;
+            bild= new ImageIcon(sftpChannel.get("public_html/Bilder/world.png"));
+            sftpChannel.exit();
+            session.disconnect();
+        } catch (JSchException e) {
+            e.printStackTrace();  
+        } catch (SftpException e) {
+            e.printStackTrace();
+        }
         setLayout(null);
-	bild = new ImageIcon("world.png");
+	//bild = new ImageIcon("world.png");
 	setPreferredSize(new Dimension(300,300));
     }
     //bild.getIconWidth(), bild.getIconHeight()
