@@ -114,6 +114,14 @@ public class Grafisk1 extends JFrame {
                         poang.setText(led.nastapoang());
                         svar.setText("");
                         totalPoang.setText(" Du har "+Integer.toString( +U1.getPoang()) +" poäng!");
+                        try {
+                            bilden.bytbild(led.bildNamn());
+                            validate();
+                            repaint();
+                        } catch (SftpException ex) {
+                            Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
                     } catch (SQLException ex) {
                         Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
                     }
