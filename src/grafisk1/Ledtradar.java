@@ -6,23 +6,19 @@
 
 package grafisk1;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author johancholmberg
  */
 public class Ledtradar {
-  ArrayList <String> ledLista = new ArrayList <String> ();
+  ArrayList <String> ledLista = new ArrayList <> ();
   
   String q_answer = "default";
   String qImgName;
@@ -42,16 +38,20 @@ public class Ledtradar {
         res = stmt.executeQuery("SELECT COUNT(*) FROM fragor");
         res.next();
         size = res.getInt(1); 
+        
 
         
     }
  
-    public void getFraga(LinkedList li) throws SQLException{
+    public synchronized void getFraga(LinkedList li) throws SQLException{
         this.ledCount=0;
         this.index = 0;
         this.ledLap = 0;
         ledLista.clear();
-        this.id = random(size,li);
+        System.out.println("Sizen = " + size);
+        id = random(size,li);
+        System.out.println("id = " + id);
+        
         String sql = "SELECT * FROM fragor WHERE id=" + id;
         rs = stmt.executeQuery(sql);
         rs.next();
@@ -78,7 +78,8 @@ public class Ledtradar {
      return ledLista.get(index);
     
  }
- public String bildNamn(){
+ public synchronized String bildNamn(){
+     System.out.println("Sending image name");
      return qImgName;
  }
  public String nastapoang(){
@@ -108,10 +109,17 @@ public class Ledtradar {
  
  public int random(int size, LinkedList li){
     int randomInt;
+    
      do {
-     Random randomGen = new Random();
+    Random randomGen = new Random();
     randomInt = randomGen.nextInt(size);
-    randomInt+=1;} while(li.contains(randomInt));
+    randomInt+=1;
+    for(Object x:li){
+        System.out.print(x);
+    }
+    System.out.println("Loopar li.contains(randomInt) = " 
+            + li.contains(randomInt) + 
+            li.isEmpty() + randomInt);} while(li.contains(randomInt)); // || li.isEmpty()==false
     return randomInt;
  }
  

@@ -37,7 +37,7 @@ public class User {
     
     public void setFraga (int id){
         this.fragLista.addFirst(id);
-        if(fragLista.size()>4){
+        if(fragLista.size()>1){
             this.fragLista.removeLast();
         }
     }

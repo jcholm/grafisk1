@@ -20,22 +20,25 @@ import javax.swing.JPanel;
  *
  * @author johancholmberg
  */
-public class Bild extends JPanel {
+public class Bild extends JPanel implements Runnable {
     ImageIcon bild;
     BufferedImage bildbuffer;
-    private ChannelSftp sftpChannel;
+    volatile ChannelSftp sftpChannel;
     InputStream out;
     Session session;
+    JSch jsch = new JSch();
     Bild() throws IOException{
         System.out.println("Not connected yet");
-        JSch jsch = new JSch();
-        ChannelSftp sftpChannel = null;
-        
+             
+
+
+    }
+    public synchronized void run(){
         try {
             session = jsch.getSession("joho3075", "sftp.dsv.su.se", 22);
             session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword("eqxkudfe2U");
-           System.out.println("Not connected yet");
+            System.out.println("Not connected yet");
             session.connect();
             System.out.println("Connection successfull");
 
@@ -45,11 +48,13 @@ public class Bild extends JPanel {
             System.out.println("Channel connected");
             this.sftpChannel = (ChannelSftp) channel;
             System.out.println("Channel done");
-            
-
         } catch (JSchException e) {
         }
-
+    }
+    public void startThread() throws IOException{
+                Thread t = new Thread(new Bild());
+                t.start();
+                
     }
     //bild.getIconWidth(), bild.getIconHeight()
     
@@ -61,7 +66,8 @@ public class Bild extends JPanel {
 	       
 	    }
     
-    public void bytbild(String namn) throws SftpException{
+    public synchronized void bytbild(String namn) throws SftpException{
+        System.out.println("Trying to find image " + namn);
         out = sftpChannel.get("public_html/Bilder/" + namn);
         System.out.println("Directory found");
         try {
