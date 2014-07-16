@@ -22,11 +22,11 @@ public class DbAnslutning {
     
     DbAnslutning(){
         try{
-        String host = "jdbc:mysql://atlas.dsv.su.se:3306/db_14534252";
+        String host = "sql3.freemysqlhosting.net";
         String driver = "com.mysql.jbdc.Driver";
-        String uname = "usr_14534252";
-        String pwd = "534252";
-        con = DriverManager.getConnection(host, uname, pwd);
+        String uname = "sql346864";
+        String pwd = "mM2!gX5%";
+        con = DriverManager.getConnection("jdbc:mysql://sql3.freemysqlhosting.net/sql346864", uname, pwd);
         
         }
         catch (SQLException err) {
