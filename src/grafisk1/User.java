@@ -7,7 +7,11 @@
 package grafisk1;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,9 +81,22 @@ public class User {
         return oppIp;
     }
     
-    public boolean uploadIp() throws UnknownHostException, SQLException{
+    public boolean uploadIp() throws UnknownHostException, SQLException, IOException{
+        URL whatismyip = new URL("http://checkip.dyndns.org/");
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                whatismyip.openStream()));
+
+        String ip = in.readLine(); //you get the IP as a String
+        System.out.println(ip);
+        String semiColon=":";
+        String slashB="</b";
+        int small=ip.indexOf(semiColon);
+        int big =ip.indexOf(slashB);
         
-        String ip = InetAddress.getLocalHost().getHostAddress();
+        String ip3 = null;
+        ip3=ip.substring(small+2, big-1);
+        
+        String ip2 = InetAddress.getLocalHost().getHostAddress();
         stmt = dbansl.con.createStatement();
         
         
