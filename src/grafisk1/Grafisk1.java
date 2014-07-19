@@ -26,6 +26,7 @@ public class Grafisk1 extends JFrame {
     JButton klar, nyled;
     static JLabel ledtrad, poang, aNamnLabel, totalPoang;
     JTextField svar;
+    JRadioButton single,multi;
     JPanel bild, center;
     Bild bilden = null;
     Ledtradar led;
@@ -34,6 +35,7 @@ public class Grafisk1 extends JFrame {
     User U1;
     SwingWorker work;
     ImageIcon img;
+    boolean singleGame;
     public synchronized void startGameGui() throws IOException, SQLException, SftpException{
         loader = new Grafisk1();
         bilden = new Bild();
@@ -47,6 +49,11 @@ public class Grafisk1 extends JFrame {
                     "Skriv in ditt namn", JOptionPane.DEFAULT_OPTION);
             this.U1 = new User(form.getNamn());
         } while (form.getNamn().isEmpty());
+        if(single.isSelected()){
+            singleGame=true;
+        }else{
+            singleGame=false;
+        }
         bilden.bytbild(led.bildNamn());
         //Create Labels for leads and points and help button
         JPanel north = new JPanel();
@@ -215,13 +222,14 @@ public class Grafisk1 extends JFrame {
     class NamnForm extends JPanel {
 
         private final JTextField NamnFält = new JTextField(13);
+        
 
         public NamnForm() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             JLabel spelTyp = new JLabel("Ange speltyp");
             ButtonGroup radio = new ButtonGroup();
-            JRadioButton single = new JRadioButton("Single player");
-            JRadioButton multi = new JRadioButton("Multi Player");
+            single = new JRadioButton("Single player");
+            multi = new JRadioButton("Multi Player");
             multi.setSelected(true);
             radio.add(single);
             radio.add(multi);
