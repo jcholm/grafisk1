@@ -56,11 +56,13 @@ public class User {
         dbansl = new DbAnslutning();
         try {
             stmt = dbansl.con.createStatement();
-            res = stmt.executeQuery("SELECT COUNT(*) FROM fragor");
+            res = stmt.executeQuery("SELECT COUNT(*) FROM Users WHERE ansluten=0");
             res.next();
             size = res.getInt(1);
             if(size>0){
-                res = stmt.executeQuery("SELECT ip FROM Users WHERE ansluten=1");
+                res = stmt.executeQuery("SELECT ip FROM Users WHERE ansluten=0");
+                res.next();
+                oppIp = res.getString("ip");
             }else{
                 oppIp = null;
             }
