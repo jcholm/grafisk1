@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class User {
     int poang,size;
-    String namn;
+    String namn,oppName;
     LinkedList fragLista = new LinkedList ();
     String oppIp,iplocal;
     DbAnslutning dbansl;
@@ -63,6 +63,7 @@ public class User {
                 res = stmt.executeQuery("SELECT id FROM Users WHERE motspelare=0");
                 res.next();
                 oppIp = res.getString("id");
+                oppName = res.getString("namn");
             }else{
                 oppIp = null;
             }
@@ -72,7 +73,7 @@ public class User {
         
         
          
-        return oppIp;
+        return oppName;
     }
     
     public boolean uploadId(){
