@@ -218,11 +218,24 @@ public class Grafisk1 extends JFrame {
 
         public NamnForm() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
+            JLabel spelTyp = new JLabel("Ange speltyp");
+            ButtonGroup radio = new ButtonGroup();
+            JRadioButton single = new JRadioButton("Single player");
+            JRadioButton multi = new JRadioButton("Multi Player");
+            multi.setSelected(true);
+            radio.add(single);
+            radio.add(multi);
+            JPanel rad0 = new JPanel();
             JPanel rad1 = new JPanel();
+            JPanel rad2 = new JPanel();
             JLabel NamnF = new JLabel("Namn");
+            rad2.add(spelTyp);
+            rad0.add(multi);
+            rad0.add(single);
             rad1.add(NamnF);
             rad1.add(NamnFält);
+            add(rad2);
+            add(rad0);
             add(rad1);
 
         }

@@ -7,12 +7,6 @@
 package grafisk1;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,7 +22,7 @@ public class User {
     int poang,size;
     String namn;
     LinkedList fragLista = new LinkedList ();
-    String oppIp;
+    String oppIp,iplocal;
     DbAnslutning dbansl;
     Statement stmt;
     ResultSet res;
@@ -62,13 +56,13 @@ public class User {
         dbansl = new DbAnslutning();
         try {
             stmt = dbansl.con.createStatement();
-            res = stmt.executeQuery("SELECT COUNT(*) FROM Users WHERE ansluten=0");
+            res = stmt.executeQuery("SELECT COUNT(*) FROM Users WHERE motspelare=0");
             res.next();
             size = res.getInt(1);
             if(size>0){
-                res = stmt.executeQuery("SELECT ip FROM Users WHERE ansluten=0");
+                res = stmt.executeQuery("SELECT id FROM Users WHERE motspelare=0");
                 res.next();
-                oppIp = res.getString("ip");
+                oppIp = res.getString("id");
             }else{
                 oppIp = null;
             }
@@ -81,27 +75,10 @@ public class User {
         return oppIp;
     }
     
-    public boolean uploadIp() throws UnknownHostException, SQLException, IOException{
-        URL whatismyip = new URL("http://checkip.dyndns.org/");
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                whatismyip.openStream()));
-
-        String ip = in.readLine(); //you get the IP as a String
-        System.out.println(ip);
-        String semiColon=":";
-        String slashB="</b";
-        int small=ip.indexOf(semiColon);
-        int big =ip.indexOf(slashB);
+    public boolean uploadId(){
         
-        String ip3 = null;
-        ip3=ip.substring(small+2, big-1);
-        
-        String ip2 = InetAddress.getLocalHost().getHostAddress();
-        stmt = dbansl.con.createStatement();
-        
-        
-        String insert = "INSERT INTO User (namn,ansluten, ip)" +
-        "VALUES ("+namn+",1,"+ip+")";
+        String insert = "INSERT INTO User (namn,motspelare,poäng)" +
+        "VALUES ("+namn+",1,"+poang+")";
         try{
            stmt.executeQuery(insert);
            return true;
@@ -110,5 +87,28 @@ public class User {
             return false;
         }
     }
+    public void updateDb(){
+        String updt = "UPDATE User SET poäng=" + poang + "WHERE id=" +oppIp;
+        try{
+           stmt.executeQuery(updt);
+        }
+        catch(SQLException e){
+        }
+    }
     
 }
+/*URL whatismyip = new URL("http://checkip.dyndns.org/");
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                whatismyip.openStream()));
+
+        String ip = in.readLine(); //you get the IP as a String
+        String semiColon=":";
+        String slashB="</b";
+        int small=ip.indexOf(semiColon);
+        int big =ip.indexOf(slashB);
+        
+        String ip3;
+        ip3=ip.substring(small+2, big-1);
+        stmt = dbansl.con.createStatement();
+        iplocal = InetAddress.getLocalHost().getHostAddress();
+        */
