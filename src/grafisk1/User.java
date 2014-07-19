@@ -7,6 +7,8 @@
 package grafisk1;
 
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -73,6 +75,23 @@ public class User {
         
          
         return oppIp;
+    }
+    
+    public boolean uploadIp() throws UnknownHostException, SQLException{
+        
+        String ip = InetAddress.getLocalHost().getHostAddress();
+        stmt = dbansl.con.createStatement();
+        
+        
+        String insert = "INSERT INTO User (namn,ansluten, ip)" +
+        "VALUES ("+namn+",1,"+ip+")";
+        try{
+           stmt.executeQuery(insert);
+           return true;
+        }
+        catch(SQLException e){
+            return false;
+        }
     }
     
 }
