@@ -6,14 +6,13 @@
 package grafisk1;
 
 import com.jcraft.jsch.SftpException;
-import static com.sun.javafx.fxml.expression.Expression.add;
 import java.awt.*;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -23,22 +22,24 @@ import javax.swing.*;
  * @author johancholmberg
  */
 public class Grafisk1 extends JFrame {
-
+    String ledtr;
     JButton klar, nyled;
-    JLabel ledtrad, poang, aNamnLabel, totalPoang;
+    static JLabel ledtrad, poang, aNamnLabel, totalPoang;
     JTextField svar;
     JPanel bild, center;
     Bild bilden = null;
     Ledtradar led;
-
+    Grafisk1 loader;
+    LinkedList qList = new LinkedList();
     User U1;
-
-    Grafisk1() throws SQLException, IOException, SftpException, InterruptedException {
-        super("test");
-        bilden = new Bild();//är en JPanel
-        Thread t = new Thread(bilden);
-        t.start();
-        String threadname = t.getName();
+    SwingWorker work;
+    ImageIcon img;
+    public synchronized void startGameGui() throws IOException, SQLException, SftpException{
+        loader = new Grafisk1();
+        bilden = new Bild();
+        led = new Ledtradar();
+        leads();
+        //Prompt player for name
         NamnForm form;
         do {
             form = new NamnForm();
@@ -46,14 +47,13 @@ public class Grafisk1 extends JFrame {
                     "Skriv in ditt namn", JOptionPane.DEFAULT_OPTION);
             this.U1 = new User(form.getNamn());
         } while (form.getNamn().isEmpty());
-
+        bilden.bytbild(led.bildNamn());
+        //Create Labels for leads and points and help button
         JPanel north = new JPanel();
         add(north, BorderLayout.NORTH);
-        led = new Ledtradar();
         System.out.println("Connected to database");
-        led.getFraga(new LinkedList());
 
-        ledtrad = new JLabel(led.nastaLed());
+        ledtrad = new JLabel(ledtr);
         nyled = new JButton("Ny ledtråd");
         nyled.addActionListener(new nyledLyss());
         poang = new JLabel(led.nastapoang());
@@ -62,22 +62,31 @@ public class Grafisk1 extends JFrame {
         north.add(ledtrad);
         north.add(nyled);
         
-        bilden.bytbild(led.bildNamn());
+        //Add center image
         add(bilden, BorderLayout.CENTER);
-
-        JPanel south = new JPanel(new BorderLayout());
-        svar = new JTextField("Svar", 10);
+        
+        // Add Labels for points and name, 
+        //textfield for answer and answer button
+        JPanel south = new JPanel(new GridLayout(1,3));
+        
+        svar = new JTextField("Svar", 15);
         klar = new JButton("Klar");
-        aNamnLabel = new JLabel(U1.getNamn());
+        
         String tP = Integer.toString(U1.getPoang());
-        totalPoang = new JLabel("  Du har " + tP + " poäng ");
+        aNamnLabel = new JLabel(U1.getNamn() + " " + tP + " poäng ");        
+        totalPoang = new JLabel("Motståndare");
+        
         add(south, BorderLayout.SOUTH);
+        
         klar.addActionListener(new klarLyss());
-        south.add(aNamnLabel, BorderLayout.WEST);
         JPanel southe = new JPanel(new BorderLayout());
-        south.add(southe, BorderLayout.EAST);
-        south.add(totalPoang, BorderLayout.CENTER);
-        southe.add(svar, BorderLayout.WEST);
+        south.add(aNamnLabel);
+        south.add(southe);            
+        south.add(totalPoang);
+        
+        
+           
+        southe.add(svar, BorderLayout.CENTER);
         southe.add(klar, BorderLayout.EAST);
         southe.getRootPane().setDefaultButton(klar);
 
@@ -86,8 +95,68 @@ public class Grafisk1 extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         //setSize(600, 300);
         pack();
-
+        update();
+        work = new imgch();
+        work.execute();
     }
+        public synchronized void leads(){
+            startThread();
+        try {
+            led.loadFraga(qList);
+            led.getFraga();
+            ledtr = led.nastaLed();
+        } catch (SQLException ex) {
+            Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        // Update leads and image
+        public void update(){
+            try{
+                U1.setFraga(led.id);
+                System.out.println("getfraga");
+                led.loadFraga(U1.getFragLista());                
+                //bilden.setBild(bilden.getBild(led.bildNamn()));
+                
+            }catch (SQLException ex) {
+                    Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            
+        }
+        
+        //Display leads and image
+        public void nextQ(){
+            led.getFraga();
+            bilden.setBild(img);
+            System.out.println("setText");
+            ledtrad.setText(led.nastaLed());
+            System.out.println("setPoang");
+            poang.setText(led.nastapoang());
+            
+            svar.setText("");
+            aNamnLabel.setText(U1.getNamn() + " " + Integer.toString(+U1.getPoang()) + " poäng ");
+        }
+        //SwingWorker worker = new SwingWorker<ImageIcon, Void>() {};
+        class imgch extends SwingWorker<ImageIcon, Void>{    
+            @Override
+            public ImageIcon doInBackground() {
+                img=null;
+                img = bilden.getBild(led.bildNamn());
+                return img;
+            }
+            @Override
+            public void done(){
+                try {
+                    img = get();
+                    
+                } catch (InterruptedException | ExecutionException ex) {
+                    Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        //Start Thread to open channel to download image
+    private synchronized void startThread(){    
+        Thread t = new Thread(bilden);
+        t.start();}
 
     class nyledLyss implements ActionListener {
 
@@ -109,31 +178,23 @@ public class Grafisk1 extends JFrame {
                 U1.setPoang(led.svarP());
                 JOptionPane.showMessageDialog(Grafisk1.this,
                         "Rätt svar!");
-                try {
-                    System.out.println("Setfraga");
-                    U1.setFraga(led.id);
-                    System.out.println("getfraga");
-                    led.getFraga(U1.getFragLista());
-                    System.out.println("setText");
-                    ledtrad.setText(led.nastaLed());
-                    System.out.println("setPoang");
-                    poang.setText(led.nastapoang());
-                    svar.setText("");
-                    totalPoang.setText(" Du har " + Integer.toString(+U1.getPoang()) + " poäng!");
-                    try {
-                        System.out.println("Trying to change image");
-                        bilden.bytbild(led.bildNamn());
-                        System.out.println("Trying to validate");
+                while(true){
+                    if(work.isDone()){
+                        
+                        System.out.println("Worker done");
+                        nextQ();
                         validate();
-                        System.out.println("Trying to repaint");
                         repaint();
-                    } catch (SftpException ex) {
-                        Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
+                        update();
+                        work = new imgch();
+                        work.execute();
+                        
+                        break;
+                    } else{
+                        System.out.println("Worker not done");
                     }
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
                 System.out.println("Rätt svar " + led.svarP() + " Poäng");
             } else {
                 System.out.println("Fel svar");
@@ -153,7 +214,7 @@ public class Grafisk1 extends JFrame {
 
     class NamnForm extends JPanel {
 
-        private JTextField NamnFält = new JTextField(13);
+        private final JTextField NamnFält = new JTextField(13);
 
         public NamnForm() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -172,8 +233,20 @@ public class Grafisk1 extends JFrame {
 
     }
 
-    public static void main(String[] args) throws SQLException, IOException, SftpException, InterruptedException {
-        new Grafisk1();
+    public static void main(String[] args) throws InterruptedException {
+        
+        
+        SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+            Grafisk1 game = new Grafisk1();
+            try {
+                game.startGameGui();
+            } catch (IOException | SQLException | SftpException ex) {
+                Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            game.setVisible(true);
+      }
+    });
 
     }
 

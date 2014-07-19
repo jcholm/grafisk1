@@ -21,7 +21,7 @@ public class Ledtradar {
   ArrayList <String> ledLista = new ArrayList <> ();
   
   String q_answer = "default";
-  String qImgName;
+  String qImgName,q_Led10,q_Led8,q_Led6,q_Led4,q_Led2;
   int ledCount=0;
   int index,size,id;
   int ledLap = 0;
@@ -43,32 +43,35 @@ public class Ledtradar {
         
     }
  
-    public synchronized void getFraga(LinkedList li) throws SQLException{
-        this.ledCount=0;
-        this.index = 0;
-        this.ledLap = 0;
-        ledLista.clear();
-        System.out.println("Sizen = " + size);
-        id = random(size,li);
-        System.out.println("id = " + id);
+    public synchronized void loadFraga(LinkedList li) throws SQLException{
         
+        
+        id = random(size,li);
         String sql = "SELECT * FROM fragor WHERE id=" + id;
         rs = stmt.executeQuery(sql);
         rs.next();
         int id_col = rs.getInt("id");
-        String q_Led10 = rs.getString("led10");
-        String q_Led8 = rs.getString("led8");
-        String q_Led6 = rs.getString("led6");
-        String q_Led4 = rs.getString("led4");
-        String q_Led2 = rs.getString("led2");
+        q_Led10 = rs.getString("led10");
+        q_Led8 = rs.getString("led8");
+        q_Led6 = rs.getString("led6");
+        q_Led4 = rs.getString("led4");
+        q_Led2 = rs.getString("led2");
         q_answer = rs.getString("svar");
         qImgName = rs.getString("bildnamn");
+        
+        
+    }
+    public synchronized void getFraga(){
+        this.ledCount=0;
+        this.index = 0;
+        this.ledLap = 0;
+        ledLista.clear();
+        ledLista.add(q_Led10);
+        ledLista.add(q_Led8);
+        ledLista.add(q_Led6);
+        ledLista.add(q_Led4);
+        ledLista.add(q_Led2);
         svarsalt = q_answer.split("\\s*,\\s*");
-        this.ledLista.add(q_Led10);
-        this.ledLista.add(q_Led8);
-        this.ledLista.add(q_Led6);
-        this.ledLista.add(q_Led4);
-        this.ledLista.add(q_Led2);
     }
     
  public String nastaLed(){
@@ -79,7 +82,6 @@ public class Ledtradar {
     
  }
  public synchronized String bildNamn(){
-     System.out.println("Sending image name");
      return qImgName;
  }
  public String nastapoang(){
@@ -113,13 +115,7 @@ public class Ledtradar {
      do {
     Random randomGen = new Random();
     randomInt = randomGen.nextInt(size);
-    randomInt+=1;
-    for(Object x:li){
-        System.out.print(x);
-    }
-    System.out.println("Loopar li.contains(randomInt) = " 
-            + li.contains(randomInt) + 
-            li.isEmpty() + randomInt);} while(li.contains(randomInt)); // || li.isEmpty()==false
+    randomInt+=1;} while(li.contains(randomInt)); // || li.isEmpty()==false
     return randomInt;
  }
  

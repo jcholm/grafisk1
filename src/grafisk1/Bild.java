@@ -28,7 +28,6 @@ public class Bild extends JPanel implements Runnable {
     Session session;
     JSch jsch = new JSch();
     Bild() throws IOException{
-        System.out.println("Not connected yet");
              
 
 
@@ -38,7 +37,6 @@ public class Bild extends JPanel implements Runnable {
             session = jsch.getSession("joho3075", "sftp.dsv.su.se", 22);
             session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword("eqxkudfe2U");
-            System.out.println("Not connected yet");
             session.connect();
             System.out.println("Connection successfull");
 
@@ -50,11 +48,6 @@ public class Bild extends JPanel implements Runnable {
             System.out.println("Channel done");
         } catch (JSchException e) {
         }
-    }
-    public void startThread() throws IOException{
-                Thread t = new Thread(new Bild());
-                t.start();
-                
     }
     //bild.getIconWidth(), bild.getIconHeight()
     
@@ -78,6 +71,23 @@ public class Bild extends JPanel implements Runnable {
         setLayout(null);
 	this.bild = new ImageIcon(bildbuffer);
 	setPreferredSize(new Dimension(300,300));
+    }
+    public synchronized ImageIcon getBild(String namn){
+        System.out.println("Trying to find image " + namn);
+        try {
+            out = sftpChannel.get("public_html/Bilder/" + namn);
+            System.out.println("Directory found");
+        
+            bildbuffer = ImageIO.read(out);
+        } catch (SftpException | IOException ex) {
+            java.util.logging.Logger.getLogger(Bild.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ImageIcon(bildbuffer);
+    }
+    public synchronized void setBild(ImageIcon img){
+        setLayout(null);
+        this.bild = img;
+        setPreferredSize(new Dimension(300,300));
     }
     public void closeCon(){
             this.sftpChannel.exit();
