@@ -19,7 +19,8 @@ import java.util.logging.Logger;
  * @author johancholmberg
  */
 public class User {
-    int poang,size;
+    int poang = 0;
+    int size;
     String namn,oppName;
     LinkedList fragLista = new LinkedList ();
     String oppIp,iplocal;
@@ -60,11 +61,14 @@ public class User {
             res.next();
             size = res.getInt(1);
             if(size>0){
-                res = stmt.executeQuery("SELECT id FROM User WHERE motspelare=0");
+                System.out.println("Searching for opponent");
+                res = stmt.executeQuery("SELECT * FROM User WHERE motspelare=0");
                 res.next();
                 oppIp = res.getString("id");
                 oppName = res.getString("namn");
+                stmt.close();
             }else{
+                System.out.println("No opponents");
                 oppName = null;
                 dbansl.con.close();
             }
@@ -76,16 +80,20 @@ public class User {
          
         return oppName;
     }
-    
-    public boolean uploadId(){
-        
-        String insert = "INSERT INTO User (namn,motspelare,poäng)" +
-        "VALUES ("+namn+",0,"+poang+")";
+    public boolean uploadId() throws SQLException{
+        stmt = dbansl.con.createStatement();
+        poang = 20;
+        System.out.println(namn + 0 + poang);
+        String insert = "INSERT INTO User (namn,poang)" +
+        "VALUES ('" + namn + "'," + poang + ")";
         try{
-           stmt.executeQuery(insert);
+           stmt.executeUpdate(insert);
+           System.out.println("Added in database");
            return true;
         }
         catch(SQLException e){
+            System.out.println("Error when adding player");
+            System.out.println(e.getErrorCode() + e.getMessage());
             return false;
         }
     }

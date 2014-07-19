@@ -136,8 +136,7 @@ public class Grafisk1 extends JFrame {
         
         public void multiplayer() throws InterruptedException{
             opponentNamn=U1.checkOpp();
-            if(opponentNamn==null)
-                U1.uploadId();
+            U1.uploadId();
             while(true){
                 if(opponentNamn==null){
                     Thread.sleep(500);
