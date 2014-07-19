@@ -135,7 +135,7 @@ public class Grafisk1 extends JFrame {
             svar.setText("");
             aNamnLabel.setText(U1.getNamn() + " " + Integer.toString(+U1.getPoang()) + " poäng ");
         }
-        //SwingWorker worker = new SwingWorker<ImageIcon, Void>() {};
+        //Download image in the background
         class imgch extends SwingWorker<ImageIcon, Void>{    
             @Override
             public ImageIcon doInBackground() {
