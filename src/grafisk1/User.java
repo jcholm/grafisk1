@@ -56,11 +56,11 @@ public class User {
         dbansl = new DbAnslutning();
         try {
             stmt = dbansl.con.createStatement();
-            res = stmt.executeQuery("SELECT COUNT(*) FROM Users WHERE motspelare=0");
+            res = stmt.executeQuery("SELECT COUNT(*) FROM User WHERE motspelare=0");
             res.next();
             size = res.getInt(1);
             if(size>0){
-                res = stmt.executeQuery("SELECT id FROM Users WHERE motspelare=0");
+                res = stmt.executeQuery("SELECT id FROM User WHERE motspelare=0");
                 res.next();
                 oppIp = res.getString("id");
                 oppName = res.getString("namn");

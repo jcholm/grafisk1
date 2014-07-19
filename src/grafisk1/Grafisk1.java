@@ -279,7 +279,7 @@ public class Grafisk1 extends JFrame {
             Grafisk1 game = new Grafisk1();
             try {
                 game.startGameGui();
-            } catch (IOException | SQLException | SftpException ex) {
+            } catch (IOException | SQLException | SftpException | InterruptedException ex) {
                 Logger.getLogger(Grafisk1.class.getName()).log(Level.SEVERE, null, ex);
             }
             game.setVisible(true);
