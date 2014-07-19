@@ -36,7 +36,10 @@ public class Grafisk1 extends JFrame {
     SwingWorker work;
     ImageIcon img;
     boolean singleGame;
-    public synchronized void startGameGui() throws IOException, SQLException, SftpException{
+    String opponentId,opponentNamn;
+    int opponentPoints;
+    
+    public synchronized void startGameGui() throws IOException, SQLException, SftpException, InterruptedException{
         loader = new Grafisk1();
         bilden = new Bild();
         led = new Ledtradar();
@@ -53,6 +56,7 @@ public class Grafisk1 extends JFrame {
             singleGame=true;
         }else{
             singleGame=false;
+            multiplayer();
         }
         bilden.bytbild(led.bildNamn());
         //Create Labels for leads and points and help button
@@ -130,7 +134,20 @@ public class Grafisk1 extends JFrame {
             
         }
         
-        //Display leads and image
+        public void multiplayer() throws InterruptedException{
+            opponentNamn=U1.checkOpp();
+            if(opponentNamn==null)
+                U1.uploadId();
+            while(true){
+                if(opponentNamn==null){
+                    Thread.sleep(5000);
+                    opponentNamn=U1.checkOpp();
+                }else{
+                    break;
+                }
+            }
+        }
+//Display leads and image
         public void nextQ(){
             led.getFraga();
             bilden.setBild(img);

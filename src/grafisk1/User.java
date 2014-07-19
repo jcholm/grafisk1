@@ -65,7 +65,7 @@ public class User {
                 oppIp = res.getString("id");
                 oppName = res.getString("namn");
             }else{
-                oppIp = null;
+                oppName = null;
             }
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
