@@ -140,7 +140,7 @@ public class Grafisk1 extends JFrame {
                 U1.uploadId();
             while(true){
                 if(opponentNamn==null){
-                    Thread.sleep(5000);
+                    Thread.sleep(500);
                     opponentNamn=U1.checkOpp();
                 }else{
                     break;

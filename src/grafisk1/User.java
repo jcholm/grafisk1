@@ -66,6 +66,7 @@ public class User {
                 oppName = res.getString("namn");
             }else{
                 oppName = null;
+                dbansl.con.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,7 +80,7 @@ public class User {
     public boolean uploadId(){
         
         String insert = "INSERT INTO User (namn,motspelare,poäng)" +
-        "VALUES ("+namn+",1,"+poang+")";
+        "VALUES ("+namn+",0,"+poang+")";
         try{
            stmt.executeQuery(insert);
            return true;
