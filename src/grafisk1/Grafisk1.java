@@ -26,7 +26,7 @@ import javax.swing.*;
 public class Grafisk1 extends JFrame {
     String ledtr;
     JButton klar, nyled;
-    static JLabel ledtrad, poang, aNamnLabel, totalPoang;
+    static JLabel ledtrad, poang, aNamnLabel, opponentName;
     JTextField svar;
     JRadioButton single,multi;
     JPanel bild, center;
@@ -38,7 +38,7 @@ public class Grafisk1 extends JFrame {
     SwingWorker work;
     ImageIcon img;
     boolean singleGame;
-    String opponentId,opponentNamn;
+    String opponentId,opponentNamn="";
     int opponentPoints;
     
     public synchronized void startGameGui() throws IOException, SQLException, SftpException, InterruptedException{
@@ -87,7 +87,7 @@ public class Grafisk1 extends JFrame {
         
         String tP = Integer.toString(U1.getPoang());
         aNamnLabel = new JLabel(U1.getNamn() + " " + tP + " poäng ");        
-        totalPoang = new JLabel("Motståndare");
+        opponentName = new JLabel();
         
         add(south, BorderLayout.SOUTH);
         
@@ -95,7 +95,8 @@ public class Grafisk1 extends JFrame {
         JPanel southe = new JPanel(new BorderLayout());
         south.add(aNamnLabel);
         south.add(southe);            
-        south.add(totalPoang);
+        south.add(opponentName);
+        opponentName.setText(opponentNamn);
         svar.selectAll();
         
            
@@ -154,7 +155,9 @@ public class Grafisk1 extends JFrame {
                 }else{
                     break;
                 }
+                
             }
+            
             
             
         }
