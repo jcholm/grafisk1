@@ -21,9 +21,10 @@ import java.util.logging.Logger;
 public class User {
     int poang = 0;
     int size;
+    int userId,oppIp;
     String namn,oppName;
     LinkedList fragLista = new LinkedList ();
-    String oppIp,iplocal;
+    String iplocal;
     DbAnslutning dbansl;
     Statement stmt;
     ResultSet res;
@@ -53,19 +54,28 @@ public class User {
     public LinkedList getFragLista (){
         return fragLista;
     }
-    public String checkOpp(){
+    public String checkOpp(String namn){
         dbansl = new DbAnslutning();
         try {
             stmt = dbansl.con.createStatement();
             res = stmt.executeQuery("SELECT COUNT(*) FROM User WHERE motspelare=0");
             res.next();
             size = res.getInt(1);
-            if(size>0){
+            String sqler = String.format("SELECT id FROM User WHERE namn='%s'", namn);
+            ResultSet rId = stmt.executeQuery(sqler);
+            rId.next();
+            userId = rId.getInt("id");
+            rId.close();
+            if(size>1){
                 System.out.println("Searching for opponent");
                 res = stmt.executeQuery("SELECT * FROM User WHERE motspelare=0");
+                do{
+                System.out.println("Running search for different player");
                 res.next();
-                oppIp = res.getString("id");
+                oppIp = res.getInt("id");
                 oppName = res.getString("namn");
+                System.out.println("Motståndare: " + oppName);
+                }while(oppIp==userId);
                 stmt.close();
             }else{
                 System.out.println("No opponents");
@@ -82,10 +92,9 @@ public class User {
     }
     public boolean uploadId() throws SQLException{
         stmt = dbansl.con.createStatement();
-        poang = 20;
         System.out.println(namn + 0 + poang);
-        String insert = "INSERT INTO User (namn,poang)" +
-        "VALUES ('" + namn + "'," + poang + ")";
+        String insert = "INSERT INTO User (namn)" +
+        "VALUES ('" + namn + "')";
         try{
            stmt.executeUpdate(insert);
            System.out.println("Added in database");
@@ -103,6 +112,15 @@ public class User {
            stmt.executeQuery(updt);
         }
         catch(SQLException e){
+        }
+    }
+    public void removeDb(){
+        String delSql = String.format("DELETE FROM User WHERE id=%s", userId);
+        try {
+            stmt.execute(delSql);
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

@@ -9,6 +9,8 @@ import com.jcraft.jsch.SftpException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -94,7 +96,7 @@ public class Grafisk1 extends JFrame {
         south.add(aNamnLabel);
         south.add(southe);            
         south.add(totalPoang);
-        
+        svar.selectAll();
         
            
         southe.add(svar, BorderLayout.CENTER);
@@ -106,6 +108,13 @@ public class Grafisk1 extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         //setSize(600, 300);
         pack();
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e){
+                svar.requestFocus();
+                svar.selectAll();
+            }
+        });
         update();
         work = new imgch();
         work.execute();
@@ -134,13 +143,13 @@ public class Grafisk1 extends JFrame {
             
         }
         
-        public void multiplayer() throws InterruptedException{
-            opponentNamn=U1.checkOpp();
+        public void multiplayer() throws InterruptedException, SQLException{
+            opponentNamn=U1.checkOpp(U1.namn);
             U1.uploadId();
             while(true){
                 if(opponentNamn==null){
                     Thread.sleep(500);
-                    opponentNamn=U1.checkOpp();
+                    opponentNamn=U1.checkOpp(U1.namn);
                 }else{
                     break;
                 }
