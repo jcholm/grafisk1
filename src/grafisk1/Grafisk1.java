@@ -96,7 +96,7 @@ public class Grafisk1 extends JFrame {
         south.add(aNamnLabel);
         south.add(southe);            
         south.add(opponentName);
-        opponentName.setText(opponentNamn);
+        opponentName.setText(opponentNamn + " "+ 0+ " poäng");
         svar.selectAll();
         
            
@@ -221,6 +221,8 @@ public class Grafisk1 extends JFrame {
             if (led.ansComp(answ)) {
                 U1.setPoang(led.svarP());
                 U1.updateDb();
+                U1.getOpp();
+                opponentName.setText(opponentNamn + " " + U1.opponentpoang + " poäng");
                 JOptionPane.showMessageDialog(Grafisk1.this,
                         "Rätt svar!");
                 while(true){

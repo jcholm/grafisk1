@@ -22,6 +22,7 @@ public class User {
     int poang = 0;
     int size;
     int userId,oppIp;
+    int opponentpoang;
     String namn,oppName;
     LinkedList fragLista = new LinkedList ();
     String iplocal;
@@ -121,6 +122,17 @@ public class User {
            System.out.println("Uppdaterad med "+poang + " user id "+userId);
         }
         catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void getOpp(){
+        String oppsql = "SELECT poang WHERE id="+oppIp;
+        try{
+            res = stmt.executeQuery(oppsql);
+            res.next();
+            opponentpoang = res.getInt("poang");
+        }catch(SQLException e){
             System.out.println(e.getMessage());
         }
     }
