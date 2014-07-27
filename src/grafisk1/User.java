@@ -66,15 +66,22 @@ public class User {
             rId.next();
             userId = rId.getInt("id");
             rId.close();
-            if(size>1){
+            int count = 0;
+            if(size>0){
                 System.out.println("Searching for opponent");
                 res = stmt.executeQuery("SELECT * FROM User WHERE motspelare=0");
                 do{
+                    count++;
                 System.out.println("Running search for different player");
                 res.next();
+                
                 oppIp = res.getInt("id");
                 oppName = res.getString("namn");
                 System.out.println("Motståndare: " + oppName);
+                if(count==size){
+                    Thread.sleep(700);
+                    res.beforeFirst();
+                }
                 }while(oppIp==userId);
                 stmt.close();
             }else{
@@ -82,7 +89,7 @@ public class User {
                 oppName = null;
                 dbansl.con.close();
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | InterruptedException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
         
