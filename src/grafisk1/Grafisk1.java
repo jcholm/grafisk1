@@ -220,6 +220,7 @@ public class Grafisk1 extends JFrame {
             String answ = svar.getText().toLowerCase();
             if (led.ansComp(answ)) {
                 U1.setPoang(led.svarP());
+                U1.updateDb();
                 JOptionPane.showMessageDialog(Grafisk1.this,
                         "Rätt svar!");
                 while(true){

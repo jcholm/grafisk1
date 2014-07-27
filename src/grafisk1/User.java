@@ -115,13 +115,16 @@ public class User {
         }
     }
     public void updateDb(){
-        String updt = "UPDATE User SET poäng=" + poang + "WHERE id=" +oppIp;
+        String updt = "UPDATE User SET poang=" + poang + " WHERE id=" + userId ;
         try{
-           stmt.executeQuery(updt);
+           stmt.executeUpdate(updt);
+           System.out.println("Uppdaterad med "+poang + " user id "+userId);
         }
         catch(SQLException e){
+            System.out.println(e.getMessage());
         }
     }
+    
     public void removeDb(){
 
         String delSql = String.format("DELETE FROM User WHERE id=%s", userId);
