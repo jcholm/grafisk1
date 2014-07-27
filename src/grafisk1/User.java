@@ -55,7 +55,7 @@ public class User {
         return fragLista;
     }
     public String checkOpp(String namn){
-        dbansl = new DbAnslutning();
+        
         try {
             stmt = dbansl.con.createStatement();
             res = stmt.executeQuery("SELECT COUNT(*) FROM User WHERE motspelare=0");
@@ -98,6 +98,7 @@ public class User {
         return oppName;
     }
     public boolean uploadId() throws SQLException{
+        dbansl = new DbAnslutning();
         stmt = dbansl.con.createStatement();
         System.out.println(namn + 0 + poang);
         String insert = "INSERT INTO User (namn)" +

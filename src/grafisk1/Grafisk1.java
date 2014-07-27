@@ -144,8 +144,9 @@ public class Grafisk1 extends JFrame {
         }
         
         public void multiplayer() throws InterruptedException, SQLException{
-            opponentNamn=U1.checkOpp(U1.namn);
             U1.uploadId();
+            opponentNamn=U1.checkOpp(U1.namn);
+            
             while(true){
                 if(opponentNamn==null){
                     Thread.sleep(500);
@@ -154,6 +155,8 @@ public class Grafisk1 extends JFrame {
                     break;
                 }
             }
+            
+            
         }
 //Display leads and image
         public void nextQ(){
