@@ -83,7 +83,7 @@ public class User {
                     res.beforeFirst();
                 }
                 }while(oppIp==userId);
-                stmt.close();
+                //stmt.close();
             }else{
                 System.out.println("No opponents");
                 oppName = null;
@@ -98,8 +98,8 @@ public class User {
         return oppName;
     }
     public boolean uploadId() throws SQLException{
-        
-        
+        dbansl = new DbAnslutning();
+        stmt = dbansl.con.createStatement();
         System.out.println(namn + 0 + poang);
         String insert = "INSERT INTO User (namn)" +
         "VALUES ('" + namn + "')";
@@ -123,16 +123,12 @@ public class User {
         }
     }
     public void removeDb(){
-        dbansl = new DbAnslutning();
-        try {
-            stmt = dbansl.con.createStatement();
-        } catch (SQLException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //String delSql = String.format("DELETE FROM User WHERE id=%s", userId);
-        String delSql = "DELETE FROM User WHERE 'motståndare'=0";
+
+        String delSql = String.format("DELETE FROM User WHERE id=%s", userId);
+        //String delSql = "DELETE FROM User WHERE 'motståndare'=0";
         try {
             stmt.execute(delSql);
+            System.out.println("Removing name from database");
             //stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);

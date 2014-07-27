@@ -115,6 +115,11 @@ public class Grafisk1 extends JFrame {
                 svar.requestFocus();
                 svar.selectAll();
             }
+            @Override
+            public void windowClosing(WindowEvent e){
+                U1.removeDb();
+                System.exit(0);
+            }
         });
         update();
         work = new imgch();
@@ -145,7 +150,7 @@ public class Grafisk1 extends JFrame {
         }
         
         public void multiplayer() throws InterruptedException, SQLException{
-            U1.removeDb();
+            //U1.removeDb();
             U1.uploadId();
             opponentNamn=U1.checkOpp(U1.namn);
             
