@@ -223,6 +223,7 @@ public class Grafisk1 extends JFrame {
                 U1.updateDb();
                 U1.getOpp();
                 opponentName.setText(opponentNamn + " " + U1.opponentpoang + " poäng");
+                
                 JOptionPane.showMessageDialog(Grafisk1.this,
                         "Rätt svar!");
                 while(true){

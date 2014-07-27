@@ -127,11 +127,12 @@ public class User {
     }
     
     public void getOpp(){
-        String oppsql = "SELECT poang WHERE id="+oppIp;
+        String oppsql = "SELECT poang FROM User WHERE id="+oppIp;
         try{
             res = stmt.executeQuery(oppsql);
             res.next();
             opponentpoang = res.getInt("poang");
+            System.out.println(opponentpoang);
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
