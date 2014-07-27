@@ -67,7 +67,7 @@ public class User {
             userId = rId.getInt("id");
             rId.close();
             int count = 0;
-            if(size>0){
+            if(size>1){
                 System.out.println("Searching for opponent");
                 res = stmt.executeQuery("SELECT * FROM User WHERE motspelare=0");
                 do{
@@ -78,7 +78,7 @@ public class User {
                 oppIp = res.getInt("id");
                 oppName = res.getString("namn");
                 System.out.println("Motståndare: " + oppName);
-                if(count==size){
+                if(count==size-1){
                     Thread.sleep(700);
                     res.beforeFirst();
                 }
@@ -87,7 +87,7 @@ public class User {
             }else{
                 System.out.println("No opponents");
                 oppName = null;
-                dbansl.con.close();
+                //dbansl.con.close();
             }
         } catch (SQLException | InterruptedException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,8 +98,8 @@ public class User {
         return oppName;
     }
     public boolean uploadId() throws SQLException{
-        dbansl = new DbAnslutning();
-        stmt = dbansl.con.createStatement();
+        
+        
         System.out.println(namn + 0 + poang);
         String insert = "INSERT INTO User (namn)" +
         "VALUES ('" + namn + "')";
@@ -123,10 +123,17 @@ public class User {
         }
     }
     public void removeDb(){
-        String delSql = String.format("DELETE FROM User WHERE id=%s", userId);
+        dbansl = new DbAnslutning();
+        try {
+            stmt = dbansl.con.createStatement();
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //String delSql = String.format("DELETE FROM User WHERE id=%s", userId);
+        String delSql = "DELETE FROM User WHERE 'motståndare'=0";
         try {
             stmt.execute(delSql);
-            stmt.close();
+            //stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }

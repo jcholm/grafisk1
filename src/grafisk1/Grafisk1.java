@@ -145,6 +145,7 @@ public class Grafisk1 extends JFrame {
         }
         
         public void multiplayer() throws InterruptedException, SQLException{
+            U1.removeDb();
             U1.uploadId();
             opponentNamn=U1.checkOpp(U1.namn);
             
